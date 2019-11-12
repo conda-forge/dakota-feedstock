@@ -14,7 +14,7 @@ source:
         - surfpack_py_bindings.patch
         - gsl.patch
         - python.patch
-        - colin_boost170.patch
+        # - colin_boost170.patch
         - tests.patch
 
 build:
