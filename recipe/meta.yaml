@@ -14,8 +14,8 @@ source:
     - surfpack_py_bindings.patch
     - gsl.patch
     - python.patch
-        # - colin_boost170.patch
     - tests.patch
+    - link_librt.patch
 
 build:
   number: 1
