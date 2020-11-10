@@ -16,9 +16,11 @@ source:
     - python.patch
     - tests.patch
     - link_librt.patch
+    - acro.c53c659.patch
+    - acro.c26e665.patch
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win or osx or py<37]
 
 requirements:

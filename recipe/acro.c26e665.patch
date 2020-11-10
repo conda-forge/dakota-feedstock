@@ -1,0 +1,696 @@
+commit c26e66542106f8637b9283bac506fefc26726012
+Author: Brian M. Adams <briadam@sandia.gov>
+Date:   Thu Jul 16 14:51:36 2020 -0600
+
+    DP-238: Clang 9.x portability fixes for Acro
+    
+    Primarily: Move utilib and colin operator<< and operator>> into
+    namespaces to faciliate lookup. This had been a longstanding concern.
+    https://clang.llvm.org/compatibility.html#dep_lookup
+    
+    Also:
+     * In Utilib: PropertyValidators need call () for expose: tmp.expose<T>()
+     * NumArray has no operator= for assignment, no idea what implicit
+       conversiton was making math_matrix.h compile.
+
+diff --git a/acro/packages/colin/src/colin/AppResponse.h b/acro/packages/colin/src/colin/AppResponse.h
+index 23f2ac6..8345759 100644
+--- a/acro/packages/colin/src/colin/AppResponse.h
++++ b/acro/packages/colin/src/colin/AppResponse.h
+@@ -30,12 +30,13 @@ class AppRequest;
+ class AppResponse;
+ } // namespace colin
+ 
+-/// Support "printing" AppResponse objects
+-std::ostream& operator<<(std::ostream& os, const colin::AppResponse& r);
+-
+ 
+ namespace colin
+ {
++
++/// Support "printing" AppResponse objects
++std::ostream& operator<<(std::ostream& os, const colin::AppResponse& r);
++
+ class Application_Base;
+ class ResponseGenerator;
+ 
+@@ -48,7 +49,7 @@ class ResponseGenerator;
+ class AppResponse
+ {
+    friend class ResponseGenerator;
+-   friend std::ostream& ::operator<<(std::ostream& os, const AppResponse& r);
++   friend std::ostream& colin::operator<<(std::ostream& os, const AppResponse& r);
+ 
+ public: // typedefs
+ 
+diff --git a/acro/packages/colin/src/colin/EvaluationID.h b/acro/packages/colin/src/colin/EvaluationID.h
+index b419f96..042b45c 100644
+--- a/acro/packages/colin/src/colin/EvaluationID.h
++++ b/acro/packages/colin/src/colin/EvaluationID.h
+@@ -21,15 +21,16 @@
+ #include <acro_config.h>
+ #include <colin/QueueManager.h>
+ 
+-// forward declaration of stream output function
+-std::ostream& operator<<(std::ostream& os, const colin::EvaluationID& id);
+ 
+ namespace colin
+ {
+ 
++// forward declaration of stream output function
++std::ostream& operator<<(std::ostream& os, const colin::EvaluationID& id);
++
+ class EvaluationID
+ {
+-   friend std::ostream& ::operator<<
++   friend std::ostream& colin::operator<<
+       (std::ostream& os, const colin::EvaluationID& id);
+ 
+ public:
+diff --git a/acro/packages/colin/src/colin/OptResponse.h b/acro/packages/colin/src/colin/OptResponse.h
+index e2804c8..e25971e 100644
+--- a/acro/packages/colin/src/colin/OptResponse.h
++++ b/acro/packages/colin/src/colin/OptResponse.h
+@@ -158,8 +158,6 @@ inline void OptResponse::read(UnPackBuffer& is)
+    //>> termination_info >> model_status >> solver_status;
+ }
+ 
+-} // namespace colin
+-
+ 
+ /// Copy colin::AppResponse information into a colin::OptResponse object.
+ inline colin::OptResponse& operator<< 
+@@ -180,4 +178,7 @@ inline colin::OptResponse& operator<<
+ }
+ 
+ 
++} // namespace colin
++
++
+ #endif
+diff --git a/acro/packages/colin/src/colin/ParetoSet.h b/acro/packages/colin/src/colin/ParetoSet.h
+index 2837ef4..98b7433 100644
+--- a/acro/packages/colin/src/colin/ParetoSet.h
++++ b/acro/packages/colin/src/colin/ParetoSet.h
+@@ -132,11 +132,11 @@ protected:
+ };
+ 
+ 
+-}
+-
+ template <class DomainT, class ValueT, class DominationFuncT>
+ std::ostream& operator<<(std::ostream& os,
+                          const colin::ParetoSet<DomainT, ValueT, DominationFuncT> & obj)
+ { obj.write(os); return os; }
+ 
++}
++
+ #endif
+diff --git a/acro/packages/colin/src/colin/TinyXML.h b/acro/packages/colin/src/colin/TinyXML.h
+index 9ffaabe..84a0d30 100644
+--- a/acro/packages/colin/src/colin/TinyXML.h
++++ b/acro/packages/colin/src/colin/TinyXML.h
+@@ -116,6 +116,8 @@ inline bool process_bounds( TiXmlElement* elt,
+                             const Type ninfty, 
+                             const Type pinfty )
+ {
++  using utilib::operator<<;
++
+    typedef boost::bimap<size_t, std::string> labels_t;
+ 
+    bool bounds_flag = false;
+diff --git a/acro/packages/colin/src/libs/AmplApplication.cpp b/acro/packages/colin/src/libs/AmplApplication.cpp
+index 1f7fb7d..e5d733b 100644
+--- a/acro/packages/colin/src/libs/AmplApplication.cpp
++++ b/acro/packages/colin/src/libs/AmplApplication.cpp
+@@ -442,6 +442,8 @@ set_nl_file(std::string fname)
+ void
+ AmplApplication_Core::write_sol_file(PointSet ps, std::stringstream &msg)
+ {
++  using utilib::operator<<;
++
+    amplflag = 1;
+ 
+    size_t size = ps->size(this);
+diff --git a/acro/packages/colin/src/libs/AmplDriver.cpp b/acro/packages/colin/src/libs/AmplDriver.cpp
+index a62df3c..6fcbd26 100644
+--- a/acro/packages/colin/src/libs/AmplDriver.cpp
++++ b/acro/packages/colin/src/libs/AmplDriver.cpp
+@@ -161,6 +161,8 @@ namespace colin
+ 
+ int AMPL_driver(int argc, char* argv[], const char* codename)
+ {
++  using utilib::operator<<;
++
+    InitializeTiming();
+ 
+    if ((argc != 3) || (argv == NULL))
+diff --git a/acro/packages/colin/src/libs/AppResponse.cpp b/acro/packages/colin/src/libs/AppResponse.cpp
+index e9298bd..afb532e 100644
+--- a/acro/packages/colin/src/libs/AppResponse.cpp
++++ b/acro/packages/colin/src/libs/AppResponse.cpp
+@@ -368,8 +368,6 @@ void AppResponse::write(std::ostream& os) const
+ }
+ */
+ 
+-} // namespace colin
+-
+ 
+ std::ostream& operator<<(std::ostream& os, const colin::AppResponse& r)
+ {
+@@ -398,3 +396,6 @@ std::ostream& operator<<(std::ostream& os, const colin::AppResponse& r)
+    }
+    return os;
+ }
++
++
++} // namespace colin
+diff --git a/acro/packages/colin/src/libs/Application_NonD_Objective.cpp b/acro/packages/colin/src/libs/Application_NonD_Objective.cpp
+index a5d9e2c..233c65c 100644
+--- a/acro/packages/colin/src/libs/Application_NonD_Objective.cpp
++++ b/acro/packages/colin/src/libs/Application_NonD_Objective.cpp
+@@ -101,6 +101,8 @@ Application_NonD_Objective::cb_print(std::ostream& os)
+ void
+ Application_NonD_Objective::cb_initialize(TiXmlElement* elt)
+ {
++  using utilib::operator<<;
++
+    //
+    // Look for nondeterministic flags...
+    //
+diff --git a/acro/packages/colin/src/libs/EvaluationID.cpp b/acro/packages/colin/src/libs/EvaluationID.cpp
+index 538a0e1..b2b0a46 100644
+--- a/acro/packages/colin/src/libs/EvaluationID.cpp
++++ b/acro/packages/colin/src/libs/EvaluationID.cpp
+@@ -20,6 +20,9 @@ using std::cerr;
+ using std::endl;
+ 
+ 
++namespace colin
++{
++
+ ///
+ std::ostream& operator<<(std::ostream& os, const colin::EvaluationID& id)
+ {
+@@ -30,9 +33,6 @@ std::ostream& operator<<(std::ostream& os, const colin::EvaluationID& id)
+ }
+ 
+ 
+-namespace colin
+-{
+-
+ //======================================================================
+ // EvaluationID member functions
+ //======================================================================
+diff --git a/acro/packages/scolib/src/libs/Direct.cpp b/acro/packages/scolib/src/libs/Direct.cpp
+index 8b344bf..13a0df6 100755
+--- a/acro/packages/scolib/src/libs/Direct.cpp
++++ b/acro/packages/scolib/src/libs/Direct.cpp
+@@ -218,6 +218,8 @@ create_parameter("ls_distance", mindist,
+ 
+ void DIRECT::reset_DIRECT()
+ {
++  using utilib::operator<<;
++
+ if ( problem.empty() ) return;
+ 
+ dimen = problem->num_real_vars;
+@@ -1761,6 +1763,8 @@ BUG?
+ 
+ direct::bvector DIRECT::Basis(int n, list<direct::NeighborHood> &Nsort, list<int> &hull)
+ {
++  using utilib::operator<<;
++
+ const double Estart = 0.2;
+ const double alphstart = 0.3;
+ const double interval = 10.0;
+diff --git a/acro/packages/scolib/src/libs/MultiStatePS.cpp b/acro/packages/scolib/src/libs/MultiStatePS.cpp
+index 8240d42..47750ec 100755
+--- a/acro/packages/scolib/src/libs/MultiStatePS.cpp
++++ b/acro/packages/scolib/src/libs/MultiStatePS.cpp
+@@ -20,7 +20,7 @@
+ #include <scolib/MultiStatePS.h>
+ 
+ //#include <utilib/_math.h>
+-//#include <utilib/stl_auxiliary.h>
++#include <utilib/stl_auxiliary.h>
+ #include <colin/cache/Factory.h>
+ #include <colin/SolverMngr.h>
+ 
+@@ -573,6 +573,7 @@ private:
+ 
+ MultiStatePS::MultiStatePS()
+ { 
++  using utilib::operator<<;
+    //utilib::OptionParser& opt = this->option;
+ 
+    config.delta_init = 1.0;
+@@ -641,6 +642,8 @@ MultiStatePS::MultiStatePS()
+ 
+ void MultiStatePS::reset_MultiStatePS()
+ {
++  using utilib::operator<<;
++
+    if ( problem.empty() ) 
+       return; 
+ 
+@@ -658,6 +661,9 @@ void MultiStatePS::reset_MultiStatePS()
+ 
+ void MultiStatePS::optimize()
+ {
++  using utilib::operator<<;
++  using colin::operator<<;
++
+    if ( DEBUG_MULTISTATE_PS > 1 )
+       cerr << "entering optimize(); " << endl; 
+ 
+@@ -824,6 +830,8 @@ void MultiStatePS::optimize()
+ 
+ void MultiStatePS::write(std::ostream& os) const
+ {
++  using utilib::operator<<;
++
+    ConcreteOptSolver_t::write(os);
+ 
+    os << "##\n## MultiState Pattern Search Controls\n##\n";
+@@ -878,6 +886,8 @@ MultiStatePS::expand_pattern_cartesian( response_t  newCenter,
+                                         double step,
+                                         std::list<request_t> & new_pts )
+ {
++  using utilib::operator<<;
++
+    if ( DEBUG_MULTISTATE_PS > 1 )
+    {
+       indent += indent_chars;
+diff --git a/acro/packages/scolib/src/libs/StateMachineLS.cpp b/acro/packages/scolib/src/libs/StateMachineLS.cpp
+index a12410e..07b4b55 100644
+--- a/acro/packages/scolib/src/libs/StateMachineLS.cpp
++++ b/acro/packages/scolib/src/libs/StateMachineLS.cpp
+@@ -189,6 +189,8 @@ test_and_prep_step( std::vector<int> &current,
+                     StateMachineLS::Data::StateTransition &transition,
+                     int index )
+ {
++  using utilib::operator<<;
++
+    list<StateMachineLS::Data::CoReq>::iterator c_it = transition.coreq.begin();
+    for ( ; c_it != transition.coreq.end(); ++c_it )
+       if ( ! c_it->satisfied(current) )
+@@ -254,6 +256,8 @@ void StateMachineLS::reset()
+ 
+ void StateMachineLS::optimize()
+ {
++  using utilib::operator<<;
++
+    std::time_t start_time = std::time(NULL);
+ 
+    if ( ! data->states_loaded )
+diff --git a/acro/packages/scolib/src/scolib/DirectMisc.h b/acro/packages/scolib/src/scolib/DirectMisc.h
+index 08e6894..608094f 100755
+--- a/acro/packages/scolib/src/scolib/DirectMisc.h
++++ b/acro/packages/scolib/src/scolib/DirectMisc.h
+@@ -205,6 +205,7 @@ public:
+   ///
+   void write(std::ostream& os) const
+ 	{
++	  using utilib::operator<<;
+ 	os << "Val   " << Val << std::endl;
+ 	//os << "cVal  " << cVal << std::endl;
+ 	os << "x     " << x << std::endl;
+diff --git a/acro/packages/utilib/src/libs/Any.cpp b/acro/packages/utilib/src/libs/Any.cpp
+index 9513ed1..40e2827 100644
+--- a/acro/packages/utilib/src/libs/Any.cpp
++++ b/acro/packages/utilib/src/libs/Any.cpp
+@@ -113,7 +113,6 @@ void Any::read(utilib::UnPackBuffer& is)
+ }
+ 
+ 
+-} // namespace utilib
+ 
+ 
+ std::ostream& operator<<( std::ostream& os, 
+@@ -143,3 +142,5 @@ utilib::UnPackBuffer& operator>>( utilib::UnPackBuffer& is,
+    any.m_any.read(is);
+    return is;
+ }
++
++} // namespace utilib
+diff --git a/acro/packages/utilib/src/libs/Property.cpp b/acro/packages/utilib/src/libs/Property.cpp
+index 2afb25b..38b97fd 100644
+--- a/acro/packages/utilib/src/libs/Property.cpp
++++ b/acro/packages/utilib/src/libs/Property.cpp
+@@ -430,8 +430,6 @@ Privileged_Property::onChangeLoopData::~onChangeLoopData()
+ }
+ 
+ 
+-} // namespace utilib
+-
+ 
+ /** Printing the ReadOnlyProperty prints the contained Any
+  *
+@@ -456,3 +454,6 @@ std::istream& operator>>( std::istream& is, utilib::Property& property )
+    property = tmp;
+    return is;
+ }
++
++
++} // namespace utilib
+diff --git a/acro/packages/utilib/src/utilib/Any.h b/acro/packages/utilib/src/utilib/Any.h
+index f7c4b1d..af1204c 100644
+--- a/acro/packages/utilib/src/utilib/Any.h
++++ b/acro/packages/utilib/src/utilib/Any.h
+@@ -1866,7 +1866,6 @@ template<typename T, typename U>
+ class Any::Printer<std::multimap<T,U> > 
+    : public STL_Any_AuxFcns::SequencePrinter<std::multimap<T,U> > {};
+ 
+-} // namespace ::utilib
+ 
+ 
+ 
+@@ -1888,6 +1887,10 @@ utilib::PackBuffer& operator<<(utilib::PackBuffer& os,
+ utilib::UnPackBuffer& operator>>( utilib::UnPackBuffer& os, 
+                                   utilib::AnyAntiCoercionWrapper any );
+ 
++
++} // namespace ::utilib
++
++
+ // WEH - where should we put STL packer declarations???
+ namespace utilib {  // :: utilib
+ template<>
+diff --git a/acro/packages/utilib/src/utilib/AnyRNG.h b/acro/packages/utilib/src/utilib/AnyRNG.h
+index 25e00ad..a5608c9 100644
+--- a/acro/packages/utilib/src/utilib/AnyRNG.h
++++ b/acro/packages/utilib/src/utilib/AnyRNG.h
+@@ -292,8 +292,6 @@ protected: // representation
+ 
+ };
+    
+-} // namespace utilib
+-
+ 
+ /// Out-stream operator for AnyRNG objects
+ inline std::ostream& operator << (std::ostream& output, const utilib::AnyRNG& rng)
+@@ -310,4 +308,8 @@ rng.read(input);
+ return input;
+ }
+ 
++
++} // namespace utilib
++
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/BasicArray.h b/acro/packages/utilib/src/utilib/BasicArray.h
+index f39d5f7..86431f2 100755
+--- a/acro/packages/utilib/src/utilib/BasicArray.h
++++ b/acro/packages/utilib/src/utilib/BasicArray.h
+@@ -806,7 +806,6 @@ int compare(const BasicArray<T>& first, const BasicArray<T>& second)
+ { return first.compare(second);}
+ 
+ 
+-} // namespace utilib
+ 
+ 
+ //============================================================================
+@@ -956,6 +955,9 @@ return is;
+ }
+ 
+ 
++} // namespace utilib
++
++
+ #ifdef CXXTEST_RUNNING
+ #include <cxxtest/ValueTraits.h>
+ namespace CxxTest {
+diff --git a/acro/packages/utilib/src/utilib/BitArray.h b/acro/packages/utilib/src/utilib/BitArray.h
+index 2e7002a..118c57f 100755
+--- a/acro/packages/utilib/src/utilib/BitArray.h
++++ b/acro/packages/utilib/src/utilib/BitArray.h
+@@ -167,8 +167,6 @@ if (ndx >= Len)
+ 
+ DEFINE_DEFAULT_ANY_PRINTER(BitArray);
+ 
+-} // namespace utilib
+-
+ /// Set equal to a constant
+ inline utilib::BitArray& operator<<(utilib::BitArray& x, int val)
+ {
+@@ -182,4 +180,7 @@ return x;
+ }
+ 
+ 
++} // namespace utilib
++
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/BitArrayBase.h b/acro/packages/utilib/src/utilib/BitArrayBase.h
+index d567433..ce70328 100755
+--- a/acro/packages/utilib/src/utilib/BitArrayBase.h
++++ b/acro/packages/utilib/src/utilib/BitArrayBase.h
+@@ -591,8 +591,6 @@ int BitArrayBase<k,T,P>::serializer( SerialObject::elementList_t& serial,
+ 
+ 
+ 
+-} // namespace utilib
+-
+ /*
+ ** TODO: find/write a test for this
+ */
+@@ -702,4 +700,8 @@ return x;
+ 
+ #endif
+ 
++
++} // namespace utilib
++
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/CharString.h b/acro/packages/utilib/src/utilib/CharString.h
+index 970b06b..977b6e4 100755
+--- a/acro/packages/utilib/src/utilib/CharString.h
++++ b/acro/packages/utilib/src/utilib/CharString.h
+@@ -382,8 +382,6 @@ if (len > 0)
+   }
+ }
+ 
+-} // namespace utilib
+-
+ /// Out-stream operator for writing the contents of a CharString
+ inline std::ostream& operator<<(std::ostream& os, const utilib::CharString& obj)
+ { obj.write(os); return(os); }
+@@ -402,8 +400,9 @@ inline utilib::UnPackBuffer& operator>>(utilib::UnPackBuffer& is,
+                                         utilib::CharString& obj)
+ { obj.read(is); return(is); }
+ 
+-namespace utilib {
+ DEFINE_FULL_ANY_EXTENSIONS(utilib::CharString);
++
+ } // namespace utilib
+ 
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/MixedIntVars.h b/acro/packages/utilib/src/utilib/MixedIntVars.h
+index 9743533..4ccf64c 100755
+--- a/acro/packages/utilib/src/utilib/MixedIntVars.h
++++ b/acro/packages/utilib/src/utilib/MixedIntVars.h
+@@ -233,8 +233,6 @@ private:
+    static bool register_aux_functions();
+ };
+ 
+-} // namespace utilib
+-
+ 
+ /// Copy doubles from a MixedIntVars object into a STL vector
+ inline std::vector<double>& operator<< (std::vector<double>& buff, 
+@@ -386,8 +384,8 @@ vars << buff.Real();
+ return vars;
+ }
+ 
+-namespace utilib {
+ DEFINE_FULL_ANY_EXTENSIONS(utilib::MixedIntVars);
++
+ } // namespace utilib
+ 
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/PackBuf.h b/acro/packages/utilib/src/utilib/PackBuf.h
+index 1c29c9d..e59d89d 100755
+--- a/acro/packages/utilib/src/utilib/PackBuf.h
++++ b/acro/packages/utilib/src/utilib/PackBuf.h
+@@ -733,8 +733,6 @@ UNPACKBUF(long long)
+ #endif 
+ 
+ 
+-} // namespace utilib
+-
+ /// Stream operator to pack a void*
+ inline utilib::PackBuffer& operator<< (utilib::PackBuffer& buff, const void*)
+ 	{return buff;}
+@@ -908,6 +906,6 @@ utilib::UnPackBuffer& operator>>(utilib::UnPackBuffer& is, std::vector<TYPE>& ve
+ }
+ #endif
+ 
+-
++} // namespace utilib
+ 
+ #endif // __PackBuf_h
+diff --git a/acro/packages/utilib/src/utilib/PackObject.h b/acro/packages/utilib/src/utilib/PackObject.h
+index d0129dd..4a30f70 100644
+--- a/acro/packages/utilib/src/utilib/PackObject.h
++++ b/acro/packages/utilib/src/utilib/PackObject.h
+@@ -54,8 +54,6 @@ public:
+ 
+ };
+ 
+-} // namespace utilib
+-
+ /// Out-stream operator for writing the contents of a PackObject
+ inline std::ostream& operator<<(std::ostream& os, const utilib::PackObject& obj)
+ { obj.write(os); return(os); }
+@@ -74,5 +72,7 @@ inline utilib::UnPackBuffer& operator>>(utilib::UnPackBuffer& is,
+ 					utilib::PackObject& obj)
+ { obj.read(is); return(is); }
+ 
++} // namespace utilib
++
+ 
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/Property.h b/acro/packages/utilib/src/utilib/Property.h
+index 27e0482..4af70d4 100644
+--- a/acro/packages/utilib/src/utilib/Property.h
++++ b/acro/packages/utilib/src/utilib/Property.h
+@@ -903,9 +903,6 @@ DEFINE_DEFAULT_ANY_COMPARATOR(Privileged_Property);
+ DEFINE_DEFAULT_ANY_READER(Property);
+ DEFINE_DEFAULT_ANY_READER(Privileged_Property);
+ 
+-} // namespace utilib
+-
+-
+ 
+ /// Method for printing out the value of properties
+ std::ostream& operator<<(std::ostream& os, 
+@@ -914,6 +911,8 @@ std::ostream& operator<<(std::ostream& os,
+ /// Method for reading into properties
+ std::istream& operator>>( std::istream& is, utilib::Property& property );
+ 
++} // namespace utilib
++
+ 
+ 
+ #ifdef CXXTEST_RUNNING
+diff --git a/acro/packages/utilib/src/utilib/PropertyValidators.h b/acro/packages/utilib/src/utilib/PropertyValidators.h
+index 2356ee8..a3734f0 100644
+--- a/acro/packages/utilib/src/utilib/PropertyValidators.h
++++ b/acro/packages/utilib/src/utilib/PropertyValidators.h
+@@ -59,7 +59,7 @@ public:
+    {
+       Any tmp;
+       utilib::TypeManager()->lexical_cast(new_value, tmp, typeid(T));
+-      return ! ( tmp.expose<T> < value );
++      return ! ( tmp.expose<T>() < value );
+    }
+ private:
+    T value;
+@@ -76,7 +76,7 @@ public:
+    {
+       Any tmp;
+       utilib::TypeManager()->lexical_cast(new_value, tmp, typeid(T));
+-      return ! ( value < tmp.expose<T> );
++      return ! ( value < tmp.expose<T>() );
+    }
+ private:
+    T value;
+@@ -93,7 +93,7 @@ public:
+    {
+       Any tmp;
+       utilib::TypeManager()->lexical_cast(new_value, tmp, typeid(T));
+-      return ! ( upper < tmp.expose<T> || tmp.expose<T>() < lower );
++      return ! ( upper < tmp.expose<T>() || tmp.expose<T>() < lower );
+    }
+ private:
+    T lower;
+diff --git a/acro/packages/utilib/src/utilib/RNG.h b/acro/packages/utilib/src/utilib/RNG.h
+index 6199c5b..ec9e9bc 100644
+--- a/acro/packages/utilib/src/utilib/RNG.h
++++ b/acro/packages/utilib/src/utilib/RNG.h
+@@ -81,8 +81,6 @@ float  ans = (float) asDouble();
+ return ans;
+ }
+ 
+-} // namespace utilib
+-
+ /// Write a RNG object state
+ inline std::ostream& operator << (std::ostream& output, const utilib::RNG& rng)
+ {
+@@ -97,4 +95,6 @@ rng.read(input);
+ return(input);
+ }
+ 
++} // namespace utilib
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/ValidateParameter.h b/acro/packages/utilib/src/utilib/ValidateParameter.h
+index 65498f0..fdfd449 100755
+--- a/acro/packages/utilib/src/utilib/ValidateParameter.h
++++ b/acro/packages/utilib/src/utilib/ValidateParameter.h
+@@ -205,7 +205,6 @@ public:
+ 	{return (x > static_cast<Type>(0));}
+ };
+ 
+-} // namespace utilib
+ 
+ 
+ //============================================================================
+@@ -216,4 +215,7 @@ inline std::ostream& operator<< (std::ostream& ostr, const utilib::ParameterVali
+ { item.write(ostr); return ostr; }
+ 
+ 
++} // namespace utilib
++
++
+ #endif
+diff --git a/acro/packages/utilib/src/utilib/math_matrix.h b/acro/packages/utilib/src/utilib/math_matrix.h
+index d18ca2f..9a79b12 100755
+--- a/acro/packages/utilib/src/utilib/math_matrix.h
++++ b/acro/packages/utilib/src/utilib/math_matrix.h
+@@ -32,7 +32,9 @@ NumArray<double> mean(const Basic2DArray<T>& matrix, const int stats_flag)
+ {
+ NumArray<double> temp(matrix.ncols());
+ 
+-temp = 0.0;
++// BMA: NumArray appears to default initialize to 0 and has no
++// operator= for the stored type
++//temp = 0.0;
+ 
+ for (size_type j=0; j<matrix.nrows(); j++)
+   for (size_type i=0; i<matrix.ncols(); i++)
+@@ -64,7 +66,9 @@ DoubleVector var(const Basic2DArray<T>& mat, BasicArray<double>& array_mean,
+ DoubleVector ans(mat.ncols());
+ array_mean &= mean(mat);
+ 
+-ans = 0.0;
++// BMA: NumArray appears to default initialize to 0 and has no
++// operator= for the stored type
++//ans = 0.0;
+ for (size_type i=0; i<mat.nrows(); i++)
+   for (size_type j=0; j<ans.size(); j++)
+     ans[j] += ((mat[i][j] - array_mean[j]) * (mat[i][j] - array_mean[j]));
+diff --git a/acro/packages/utilib/src/utilib/stl_auxiliary.h b/acro/packages/utilib/src/utilib/stl_auxiliary.h
+index 3bcbbd2..ad1ff1f 100755
+--- a/acro/packages/utilib/src/utilib/stl_auxiliary.h
++++ b/acro/packages/utilib/src/utilib/stl_auxiliary.h
+@@ -120,8 +120,6 @@ else
+ return is;
+ }
+ 
+-} // namespace utilib
+-
+ 
+ /// Stream operator for copying one vector into another
+ template <class Type1, class Type2>
+@@ -588,4 +586,7 @@ utilib::UnPackBuffer& operator>>(utilib::UnPackBuffer& is, utilib::bimap<KEY,VAL
+    return is;
+ }
+ 
++} // namespace utilib
++
++
+ #endif

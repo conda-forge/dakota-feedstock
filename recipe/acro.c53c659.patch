@@ -1,0 +1,156 @@
+commit c53c659552ccf4ae882d360e74fce8f84bf606a0
+Author: Brian M. Adams <briadam@sandia.gov>
+Date:   Thu Jul 16 14:22:06 2020 -0600
+
+    Acro/Utilib Clang 9 portability: fix legitimate warnings
+    
+    DP-238: Fix warnings with:
+     * Deprecated register keyword
+     * Precedence of logical || vs &&
+     * Implicit converstion of char as int to std::string
+
+diff --git a/acro/packages/interfaces/src/interfaces/Hooke.h b/acro/packages/interfaces/src/interfaces/Hooke.h
+index 8f81f11..be5e428 100755
+--- a/acro/packages/interfaces/src/interfaces/Hooke.h
++++ b/acro/packages/interfaces/src/interfaces/Hooke.h
+@@ -16,7 +16,7 @@
+  */
+ 
+ #ifndef interfaces_Hooke_h
+-#define intefaces_Hooke_h
++#define interfaces_Hooke_h
+ 
+ #include <acro_config.h>
+ #ifdef ACRO_USING_THREEPO
+diff --git a/acro/packages/utilib/src/libs/OptionParser.cpp b/acro/packages/utilib/src/libs/OptionParser.cpp
+index 7156255..05b9037 100644
+--- a/acro/packages/utilib/src/libs/OptionParser.cpp
++++ b/acro/packages/utilib/src/libs/OptionParser.cpp
+@@ -437,8 +437,10 @@ void OptionParser::write_values(std::ostream& os, const std::string& opt_label)
+          if (output.size() == 0)
+             os << "\"\"";
+          else if ( output.find(" ") != string::npos &&
+-                   ! (( output[0] == '"' ) && ( *output.rbegin() == '"' ) ||
+-                      ( output[0] == '[' ) && ( *output.rbegin() == ']' )))
++                   ! ( (output[0] == '"'  &&  *output.rbegin() == '"') ||
++                       (output[0] == '['  &&  *output.rbegin() == ']')
++		       )
++		   )
+             // Instead of explicitly testing for std::string and
+             // CharString, we will simply look for data with a space
+             // that is not already within quotes or look like a vector.
+@@ -702,7 +704,7 @@ void OptionParser::add_parameter(data_t any_param)
+          if (param.name == "")
+          {
+             std::string tmp;
+-            tmp += "_" + param.short_name;;
++            tmp += std::string("_") + param.short_name;
+             parameters[tmp] = any_param;
+          }
+       }
+diff --git a/acro/packages/utilib/src/libs/lookupa.cpp b/acro/packages/utilib/src/libs/lookupa.cpp
+index 8e9c24d..ebd51db 100755
+--- a/acro/packages/utilib/src/libs/lookupa.cpp
++++ b/acro/packages/utilib/src/libs/lookupa.cpp
+@@ -27,7 +27,7 @@ namespace utilib {
+ 
+ typedef unsigned long int  ub4; /* unsigned 4-byte quantities */
+ typedef unsigned      char ub1; /* unsigned 1-byte quantities */
+-ub4 bjlookup( register ub1* k, register ub4 length, register ub4 level);
++ub4 bjlookup( ub1* k, ub4 length, ub4 level);
+ 
+ 
+ /*
+@@ -95,9 +95,9 @@ acceptable.  Do NOT use for cryptographic purposes.
+ --------------------------------------------------------------------
+ */
+ 
+-ub4 bjlookup( register ub1* k, register ub4 length, register ub4 level)
++ub4 bjlookup( ub1* k, ub4 length, ub4 level)
+ {
+-   register ub4 a,b,c,len;
++   ub4 a,b,c,len;
+ 
+    /* Set up the internal state */
+    len = length;
+@@ -183,7 +183,7 @@ is trying to cause collisions.  Do NOT use for cryptography.
+ #ifdef UTILIB_YES_CHECKSUM
+ static void  checksum(ub1* k, ub4 len, ub4* state)
+ {
+-   register ub4 a,b,c,d,e,f,g,h,length;
++   ub4 a,b,c,d,e,f,g,h,length;
+ 
+    /* Use the length and level; add in the golden ratio. */
+    length = len;
+diff --git a/acro/packages/utilib/src/libs/math_basic.cpp b/acro/packages/utilib/src/libs/math_basic.cpp
+index 7b91b50..dd6eb1a 100755
+--- a/acro/packages/utilib/src/libs/math_basic.cpp
++++ b/acro/packages/utilib/src/libs/math_basic.cpp
+@@ -83,7 +83,7 @@ std::string pscientific(const double t, int mantissa, int expwidth,
+ #endif
+ 
+   s = std::string(ss);
+-  delete ss;
++  delete[] ss;
+ 
+ //  if (os)			// restore flags
+ //    os->flags(flags);
+diff --git a/acro/packages/utilib/src/utilib/AbstractHeap.h b/acro/packages/utilib/src/utilib/AbstractHeap.h
+index 185296a..29a68e6 100755
+--- a/acro/packages/utilib/src/utilib/AbstractHeap.h
++++ b/acro/packages/utilib/src/utilib/AbstractHeap.h
+@@ -370,8 +370,8 @@ AbstractHeap<T,KEY,Compare>::~AbstractHeap()
+ template <class T, class KEY, class Compare>
+ void AbstractHeap<T,KEY,Compare>::swap(int a,int b) 
+ {
+-register T* t1 = tree[a];
+-register T* t2 = tree[b];
++T* t1 = tree[a];
++T* t2 = tree[b];
+ tree[a] = t2;
+ tree[b] = t1;
+ element(t1)=b;
+diff --git a/acro/packages/utilib/src/utilib/bimap.h b/acro/packages/utilib/src/utilib/bimap.h
+index 70fb664..50710ef 100755
+--- a/acro/packages/utilib/src/utilib/bimap.h
++++ b/acro/packages/utilib/src/utilib/bimap.h
+@@ -332,7 +332,7 @@ bool operator<(
+   const inv_pair<first_type,second_type>& x,
+   const inv_pair<first_type,second_type>& y)
+ {
+-  return x.first<y.first||x.first==y.first&&x.second<y.second;
++  return x.first<y.first||(x.first==y.first&&x.second<y.second);
+ }
+ 
+ template<typename first_type,typename second_type>
+@@ -340,7 +340,7 @@ bool operator<(
+   const inv_pair<first_type,second_type>& x,
+   const std::pair<first_type,second_type>& y)
+ {
+-  return x.first<y.first||x.first==y.first&&x.second<y.second;
++  return x.first<y.first||(x.first==y.first&&x.second<y.second);
+ }
+ 
+ template<typename first_type,typename second_type>
+@@ -348,7 +348,7 @@ bool operator<(
+   const std::pair<first_type,second_type>& x,
+   const inv_pair<first_type,second_type>& y)
+ {
+-  return x.first<y.first||x.first==y.first&&x.second<y.second;
++  return x.first<y.first||(x.first==y.first&&x.second<y.second);
+ }
+ 
+ /* > */
+diff --git a/acro/packages/utilib/src/utilib/hash_fn.h b/acro/packages/utilib/src/utilib/hash_fn.h
+index 88f32bf..640714e 100644
+--- a/acro/packages/utilib/src/utilib/hash_fn.h
++++ b/acro/packages/utilib/src/utilib/hash_fn.h
+@@ -33,7 +33,7 @@ typedef unsigned long int  ub4;
+ /// unsigned 1-byte quantities 
+ typedef unsigned      char ub1;
+ /// The Bob Jenkins hash function
+-ub4 bjlookup( register ub1* k, register ub4 length, register ub4 level);
++ub4 bjlookup( ub1* k, ub4 length, ub4 level);
+ 
+ /// Hash a long int
+ inline unsigned long int hash_bj(const long int& val, unsigned long int level=0)
