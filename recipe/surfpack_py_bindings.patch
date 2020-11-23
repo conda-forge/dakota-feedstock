@@ -1,14 +1,16 @@
 diff --git a/packages/surfpack/src/CMakeLists.txt b/packages/surfpack/src/CMakeLists.txt
-index fe3cd72f..7fd87341 100644
+index fe3cd72f..f5c2317d 100644
 --- a/packages/surfpack/src/CMakeLists.txt
 +++ b/packages/surfpack/src/CMakeLists.txt
-@@ -72,6 +72,27 @@ add_library(${local_library} ${lib${local_library}_sources})
+@@ -72,6 +72,29 @@ add_library(${local_library} ${lib${local_library}_sources})
  add_library(${local_library}_fortran ${lib${local_library}_sources_fortran})
  target_link_libraries(${local_library} ${local_library}_fortran)
  
 +option(SURFPACK_PYTHONBINDINGS "create python-bindings for surfpack" ON)
 +
 +if(SURFPACK_PYTHONBINDINGS)
++  find_package(PythonInterp REQUIRED)
++  find_package(PythonLibs REQUIRED)
 +  find_package(pybind11)
 +  if (pybind11_FOUND)
 +    # getting the install dir for the python module
