@@ -1,34 +1,11 @@
-diff --git a/packages/surfpack/CMakeLists.txt b/packages/surfpack/CMakeLists.txt
-index 5172b60..7dc707a 100644
---- a/packages/surfpack/CMakeLists.txt
-+++ b/packages/surfpack/CMakeLists.txt
-@@ -201,4 +201,4 @@ add_subdirectory(src)
- if(SURFPACK_STANDALONE)
-   add_subdirectory(interface)
- endif()
--#add_subdirectory(examples/CInterface)
-+#add_subdirectory(examples/CInterface)
-\ No newline at end of file
 diff --git a/packages/surfpack/src/CMakeLists.txt b/packages/surfpack/src/CMakeLists.txt
-index b372640..3b23d19 100644
+index fe3cd72f..7fd87341 100644
 --- a/packages/surfpack/src/CMakeLists.txt
 +++ b/packages/surfpack/src/CMakeLists.txt
-@@ -71,6 +71,7 @@ endif()
- add_library(${local_library} ${lib${local_library}_sources})
+@@ -72,6 +72,27 @@ add_library(${local_library} ${lib${local_library}_sources})
  add_library(${local_library}_fortran ${lib${local_library}_sources_fortran})
  target_link_libraries(${local_library} ${local_library}_fortran)
-+
- #if (HAVE_PECOS)
- #  target_link_libraries(${local_library} pecos ${Pecos_LINK_LIBRARIES} 
- #    ${Teuchos_LIBRARIES} ${TEUCHOS_LIBRARY} ${LAPACK_LIBS} ${BLAS_LIBS})
-@@ -87,4 +88,25 @@ install(FILES SurfpackMatrix.h surfpack_system_headers.h DESTINATION include)
- # no reason couldn't be directly in libsurfpack.
- add_library(surfpack_c_interface surfpack_c_interface.cpp)
- install(TARGETS surfpack_c_interface DESTINATION lib)
--install(FILES surfpack_c_interface.h DESTINATION include)
-\ No newline at end of file
-+install(FILES surfpack_c_interface.h DESTINATION include)
-+
+ 
 +option(SURFPACK_PYTHONBINDINGS "create python-bindings for surfpack" ON)
 +
 +if(SURFPACK_PYTHONBINDINGS)
@@ -49,10 +26,13 @@ index b372640..3b23d19 100644
 +    install(TARGETS pysurfpack DESTINATION ${PYTHON_INSTALL_DIR})
 +  endif()
 +endif()
-\ No newline at end of file
++
+ if(HAVE_BOOST_SERIALIZATION)
+   target_compile_definitions(${local_library} PUBLIC
+     SURFPACK_HAVE_BOOST_SERIALIZATION)
 diff --git a/packages/surfpack/src/pysurfpack.cpp b/packages/surfpack/src/pysurfpack.cpp
 new file mode 100644
-index 0000000..478b2ec
+index 00000000..478b2eca
 --- /dev/null
 +++ b/packages/surfpack/src/pysurfpack.cpp
 @@ -0,0 +1,93 @@

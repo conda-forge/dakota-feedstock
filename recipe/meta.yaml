@@ -12,10 +12,9 @@ source:
   sha256: {{ sha256sum }}
   patches:
     - surfpack_py_bindings.patch
-    - gsl.patch
     - python.patch
     - tests.patch
-    - link_librt.patch
+    # - link_librt.patch
 
 build:
   number: 0
