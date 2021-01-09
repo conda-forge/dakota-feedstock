@@ -25,11 +25,11 @@ gsl:
 hdf5:
 - 1.10.6
 libblas:
-- 3.9 *openblas
+- 3.8 *openblas
 libcblas:
-- 3.9 *openblas
+- 3.8 *openblas
 liblapack:
-- 3.9.0 *openblas
+- 3.8.0 *openblas
 numpy:
 - '1.16'
 openmpi:
