@@ -14,7 +14,7 @@ source:
     # - surfpack_py_bindings.patch
     - python.patch
     - tests.patch
-    # - link_librt.patch
+    - link_librt.patch
 
 build:
   number: 0
