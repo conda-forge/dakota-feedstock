@@ -11,7 +11,7 @@ source:
   url: https://dakota.sandia.gov/sites/default/files/distributions/public/dakota-{{ version }}-release-public.src.tar.gz
   sha256: {{ sha256sum }}
   patches:
-    - surfpack_py_bindings.patch
+    # - surfpack_py_bindings.patch
     - python.patch
     - tests.patch
     - link_librt.patch
