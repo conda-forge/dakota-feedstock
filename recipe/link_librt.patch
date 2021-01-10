@@ -1,16 +1,16 @@
 diff --git a/src/unit_test/CMakeLists.txt b/src/unit_test/CMakeLists.txt
-index 2010f145..661470fc 100644
+index 2010f145..faf2edc2 100644
 --- a/src/unit_test/CMakeLists.txt
 +++ b/src/unit_test/CMakeLists.txt
-@@ -23,6 +23,11 @@ include_directories(${Dakota_INCLUDE_DIRS}/src) # include tpl directories
- # Needed when linking with QUESO
- link_directories(${Dakota_LIBRARY_DIRS})
+@@ -79,6 +79,11 @@ dakota_add_unit_test(NAME leja_sampling
+   )
+ target_link_libraries(leja_sampling Boost::boost)
  
 +target_link_libraries(min_unit_test "rt")
 +target_link_libraries(auto_unit_test "rt")
 +target_link_libraries(bootstrap_util_test "rt")
 +target_link_libraries(test_field_covariance_utils "rt")
 +
- # ---
- # Unit test targets
- # ---
+ # Unit test: h5py_hdf5
+ if(DAKOTA_HAVE_HDF5 AND Python_Interpreter_FOUND AND
+    Python_VERSION VERSION_GREATER 2.6)
