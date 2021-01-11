@@ -15,7 +15,7 @@ source:
     - python.patch
     - tests.patch
     - link_librt.patch
-    - use_external_pybind11.patch
+    # - use_external_pybind11.patch
 
 build:
   number: 0
@@ -29,7 +29,7 @@ requirements:
     - {{ compiler('fortran') }}
   host:
     - openmpi
-    - pybind11
+    # - pybind11
     - boost-cpp
     - libblas
     - libcblas
