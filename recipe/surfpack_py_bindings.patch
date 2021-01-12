@@ -1,3 +1,9 @@
+commit fb506af8a32f6994111a290615b79221af6869a5
+Author: looooo <sppedflyer@gmail.com>
+Date:   Tue Jan 12 21:23:18 2021 +0100
+
+    pysurfpack.patch
+
 diff --git a/packages/surfpack/src/CMakeLists.txt b/packages/surfpack/src/CMakeLists.txt
 index fe3cd72f..d9eb40ac 100644
 --- a/packages/surfpack/src/CMakeLists.txt
@@ -27,3 +33,103 @@ index fe3cd72f..d9eb40ac 100644
  if(HAVE_BOOST_SERIALIZATION)
    target_compile_definitions(${local_library} PUBLIC
      SURFPACK_HAVE_BOOST_SERIALIZATION)
+diff --git a/packages/surfpack/src/pysurfpack.cpp b/packages/surfpack/src/pysurfpack.cpp
+new file mode 100644
+index 00000000..478b2eca
+--- /dev/null
++++ b/packages/surfpack/src/pysurfpack.cpp
+@@ -0,0 +1,93 @@
++#include <pybind11/pybind11.h>
++#include <pybind11/stl.h>
++
++#include <vector>
++#include <string>
++#include <SurfpackInterface.h>
++#include <SurfData.h>
++#include <SurfPoint.h>
++#include <surfaces/SurfpackModel.h>
++
++namespace py = pybind11;
++
++SurfData SurfData_from_array(const std::vector<std::vector<double>>& independent_valus,
++						     const std::vector<double>& dependent_valus)
++{
++	std::vector<SurfPoint> points;
++	assert(independent_valus.size() == dependent_valus.size());
++	for (int i=0; i<independent_valus.size(); i++)
++	{
++		SurfPoint point(independent_valus[i], dependent_valus[i]);
++		points.push_back(point);
++	}
++	return SurfData(points);
++}
++
++std::vector<std::vector<double>> get_hessian(SurfpackModel& m, const VecDbl& x)
++{
++	std::vector<std::vector<double>> _hessian;
++	MtxDbl mat = m.hessian(x);
++	for (int i=0; i < mat.getNRows(); i++)
++	{
++		std::vector<double> _hessian_row;
++		for (int j=0; j < mat.getNCols(); j++)
++		{
++			_hessian_row.push_back(mat(i, j));
++		}
++		_hessian.push_back(_hessian_row);
++	}
++	return _hessian;
++}
++
++
++PYBIND11_MODULE(pysurfpack, m) {
++	m.doc() = "python-bindings for surfpack";
++
++	py::class_<SurfData>(m, "Data")
++		.def("from_array", &SurfData_from_array);
++
++	py::class_<SurfpackModel>(m, "Model")
++		.def("response", [](SurfpackModel& m, const VecDbl& x){return m(x);})
++		.def("variance", &SurfpackModel::variance, "computing the variance for given point")
++		.def("gradient", &SurfpackModel::gradient, "computing the gradient for a given point")
++		.def("hessian", &get_hessian, "computing the hessian for a given point")
++		.def("get_parameters",
++			[](SurfpackModel& m){return m.parameters();},
++			"retrive the parameters of the model")
++		.def("set_parameters",
++			[](SurfpackModel& m, const ParamMap& pars){m.parameters(pars);},
++			"set the parameters of the model")
++		.def("r_squared", &SurfpackModel::rSquared)
++		.def("press", &SurfpackModel::press);
++
++	m.def("load_model", 
++		&SurfpackInterface::LoadModel, 
++		"load a model from a file into a pysurface.Model"
++		);
++
++	m.def("save_model",
++		[](const SurfpackModel* model, const std::string& filename)
++			{SurfpackInterface::Save(model, filename);},
++		"writes the model to a file"
++		);
++
++	m.def("save_data",
++		[](const SurfData* data, const std::string& filename)
++			{SurfpackInterface::Save(data, filename);},
++		"serialize pysurfpack.Data"
++		);
++
++	m.def("load_data",
++		[](const std::string& filename)
++			{return SurfpackInterface::LoadData(filename);},
++		"opens and loads data into a pysurfpack.Data object"
++		);
++
++	// interface not yet working
++	// m.def("create_surface",
++	// 	[](const SurfData* sd, ParamMap& args)
++	// 		{return SurfpackInterface::CreateSurface(sd, args);},
++	// 	"create surface from pysurface.Data and parameters"
++	// 	);
++
++}
+\ No newline at end of file
