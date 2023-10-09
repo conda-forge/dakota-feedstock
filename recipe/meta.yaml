@@ -10,9 +10,8 @@ package:
   version: {{ version }}
 
 source:
-  fn: dakota{{ version }}.tar.gz
-  url: https://dakota.sandia.gov/sites/default/files/distributions/public/dakota-{{ version }}-public-src-cli.tar.gz
-  sha256: 49684ade2a937465d85b0fc69c96408be38bc1603ed2e7e8156d93eee3567d2f
+  url: https://github.com/snl-dakota/dakota/releases/download/v{{ version }}/dakota-{{ version }}-public-src-cli.tar.gz
+  sha256: 51c4aaa5ab453c48b6ffae0af1b21f2efa1a719a30eaf3e3712b2693c7e9a420
   patches:
     # - patches/surfpack_py_bindings.patch
     - patches/python.patch
@@ -85,7 +84,7 @@ about:
     models. The Dakota toolkit provides a flexible, extensible interface 
     between such simulation codes and its iterative systems analysis methods.
   doc_url: https://dakota.sandia.gov/content/610-reference-manual
-  dev_url: https://dakota.sandia.gov/
+  dev_url: https://github.com/snl-dakota/dakota
 
 extra:
   recipe-maintainers:
