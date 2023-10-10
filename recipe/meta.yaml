@@ -22,6 +22,8 @@ source:
 build:
   number: 1
   skip: true  # [win or osx]
+  # not yet compatible/supported
+  skip: true  # [py==311]
 
 requirements:
   build:
