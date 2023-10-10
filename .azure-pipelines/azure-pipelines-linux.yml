@@ -20,10 +20,6 @@ jobs:
         CONFIG: linux_64_blas_implblisnumpy1.22python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_blas_implblisnumpy1.23python3.11.____cpython:
-        CONFIG: linux_64_blas_implblisnumpy1.23python3.11.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_blas_implmklnumpy1.22python3.10.____cpython:
         CONFIG: linux_64_blas_implmklnumpy1.22python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -36,10 +32,6 @@ jobs:
         CONFIG: linux_64_blas_implmklnumpy1.22python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_blas_implmklnumpy1.23python3.11.____cpython:
-        CONFIG: linux_64_blas_implmklnumpy1.23python3.11.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_blas_implopenblasnumpy1.22python3.10.____cpython:
         CONFIG: linux_64_blas_implopenblasnumpy1.22python3.10.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -50,10 +42,6 @@ jobs:
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
       linux_64_blas_implopenblasnumpy1.22python3.9.____cpython:
         CONFIG: linux_64_blas_implopenblasnumpy1.22python3.9.____cpython
-        UPLOAD_PACKAGES: 'True'
-        DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
-      linux_64_blas_implopenblasnumpy1.23python3.11.____cpython:
-        CONFIG: linux_64_blas_implopenblasnumpy1.23python3.11.____cpython
         UPLOAD_PACKAGES: 'True'
         DOCKER_IMAGE: quay.io/condaforge/linux-anvil-cos7-x86_64
   timeoutInMinutes: 360
