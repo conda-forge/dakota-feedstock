@@ -1,15 +1,15 @@
-About dakota
-============
-
-Home: https://dakota.sandia.gov
-
-Package license: LGPL-3.0
+About dakota-feedstock
+======================
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/dakota-feedstock/blob/main/LICENSE.txt)
 
+Home: https://dakota.sandia.gov
+
+Package license: LGPL-2.1-or-later
+
 Summary: The Dakota project delivers software for optimization and uncertainty quantification.
 
-Development: https://dakota.sandia.gov/
+Development: https://github.com/snl-dakota/dakota
 
 Documentation: https://dakota.sandia.gov/content/610-reference-manual
 
@@ -39,66 +39,66 @@ Current build status
         <table>
           <thead><tr><th>Variant</th><th>Status</th></tr></thead>
           <tbody><tr>
-              <td>linux_64_blas_implblisnumpy1.20python3.8.____cpython</td>
+              <td>linux_64_blas_implblisnumpy1.22python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.20python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implblisnumpy1.20python3.9.____cpython</td>
+              <td>linux_64_blas_implblisnumpy1.22python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.20python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implblisnumpy1.21python3.10.____cpython</td>
+              <td>linux_64_blas_implblisnumpy1.22python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.20python3.8.____cpython</td>
+              <td>linux_64_blas_implmklnumpy1.22python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.20python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.20python3.9.____cpython</td>
+              <td>linux_64_blas_implmklnumpy1.22python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.20python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.21python3.10.____cpython</td>
+              <td>linux_64_blas_implmklnumpy1.22python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.20python3.8.____cpython</td>
+              <td>linux_64_blas_implopenblasnumpy1.22python3.10.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.20python3.8.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.10.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.20python3.9.____cpython</td>
+              <td>linux_64_blas_implopenblasnumpy1.22python3.8.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.20python3.9.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.21python3.10.____cpython</td>
+              <td>linux_64_blas_implopenblasnumpy1.22python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.21python3.10.____cpython" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.9.____cpython" alt="variant">
                 </a>
               </td>
             </tr>
@@ -231,4 +231,5 @@ Feedstock Maintainers
 =====================
 
 * [@looooo](https://github.com/looooo/)
+* [@timsnyder](https://github.com/timsnyder/)
 
