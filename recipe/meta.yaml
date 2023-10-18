@@ -20,7 +20,7 @@ source:
     # - patches/use_external_pybind11.patch
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win or osx]
   # not yet compatible/supported
   skip: true  # [py==311]
@@ -35,7 +35,7 @@ requirements:
   host:
     - openmpi
     # - pybind11
-    - boost-cpp
+    - libboost-devel
     - libblas * *{{ blas_impl }}
     - libcblas * *{{ blas_impl }}
     - liblapack * *{{ blas_impl }}  # [blas_impl != "blis"]
@@ -53,7 +53,6 @@ requirements:
     - libblas * *{{ blas_impl }}
     - libcblas * *{{ blas_impl }}
     - {{ blas_impl }}
-    - boost-cpp
     - python
     - {{ pin_compatible("numpy") }}
         # - trilinos
