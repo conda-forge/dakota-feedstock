@@ -17,3 +17,22 @@ index 3745413..25ffa22 100644
 +endif(PYTHON_EXECUTABLE)
  install(PROGRAMS "mpitile" DESTINATION "bin/")
  
+commit 84075ec2e57a09ddb63fdd09848babd519357a69
+Author: looooo <sppedflyer@gmail.com>
+Date:   Tue Jun 11 21:58:32 2024 +0200
+
+    python.patch
+
+diff --git a/interfaces/Python/CMakeLists.txt b/interfaces/Python/CMakeLists.txt
+index 9d03dbfac..e93ae212c 100644
+--- a/interfaces/Python/CMakeLists.txt
++++ b/interfaces/Python/CMakeLists.txt
+@@ -8,7 +8,7 @@ if(DAKOTA_ENABLE_TESTS AND Python_Interpreter_FOUND AND
+   set_property(TEST dakota_interfacing_test PROPERTY LABELS Unit Python)
+ endif()
+ 
+-install(DIRECTORY "dakota" DESTINATION "share/dakota/Python/"
++install(DIRECTORY "dakota" DESTINATION ${Python_SITEARCH}
+   PATTERN "__pycache__" EXCLUDE
+   PATTERN "*.py[cdo]" EXCLUDE
+   )

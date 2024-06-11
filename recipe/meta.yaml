@@ -12,8 +12,8 @@ source:
   url: https://github.com/snl-dakota/dakota/releases/download/v{{ version }}/dakota-{{ version }}-public-src-cli.tar.gz
   sha256: 44432d30a8df226cbe9c9d2507a2634b543559a195d0b3b63e9d7f6179098d4a
   patches:
-    # - patches/python.patch
-    # - patches/tests.patch
+    - patches/python.patch
+    - patches/tests.patch
     # - patches/link_librt.patch
     # - patches/boost_dll_import_symbol.patch
     # # - patches/surfpack_py_bindings.patch
