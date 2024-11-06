@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 mkdir -p build
 cd build
@@ -14,6 +15,7 @@ fi
 
 cmake -G "Ninja" \
       -D CMAKE_BUILD_TYPE:STRING=RELEASE \
+      -D CMAKE_CXX_STANDARD=14 \
       -D CMAKE_INSTALL_PREFIX:PATH=$PREFIX \
       -D DAKOTA_EXAMPLES_INSTALL:PATH=$PREFIX/share/dakota \
       -D DAKOTA_TEST_INSTALL:PATH=$PREFIX/share/dakota \
