@@ -20,7 +20,7 @@ source:
     # - patches/use_external_pybind11.patch
 
 build:
-  number: 3
+  number: 4
   skip: true  # [win or osx]
   # not yet compatible/supported
   skip: true  # [py==311]
@@ -55,7 +55,6 @@ requirements:
     - libcblas * *{{ blas_impl }}
     - {{ blas_impl }}
     - python
-    - {{ pin_compatible("numpy") }}
         # - trilinos
 test:
   files:
