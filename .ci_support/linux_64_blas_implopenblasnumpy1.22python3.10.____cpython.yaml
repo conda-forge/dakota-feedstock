@@ -35,7 +35,7 @@ liblapack:
 numpy:
 - '1.22'
 openmpi:
-- '4'
+- '5'
 perl:
 - 5.32.1
 pin_run_as_build:
