@@ -1,5 +1,5 @@
 blas_impl:
-- openblas
+- mkl
 c_compiler:
 - gcc
 c_compiler_version:
@@ -11,7 +11,7 @@ c_stdlib_version:
 cdt_name:
 - cos6
 channel_sources:
-- conda-forge
+- conda-forge/label/numpy_rc,conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
@@ -33,7 +33,7 @@ libboost_devel:
 liblapack:
 - 3.9 *netlib
 numpy:
-- '1.22'
+- '2.0'
 openmpi:
 - '4'
 perl:
