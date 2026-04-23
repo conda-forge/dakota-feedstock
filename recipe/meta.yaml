@@ -1,4 +1,4 @@
-{% set version = "6.16.0" %}
+{% set version = "6.20.0" %}
 
 {% if blas_impl is undefined %}
 {% set blas_impl = "openblas" %}
@@ -10,20 +10,17 @@ package:
 
 source:
   url: https://github.com/snl-dakota/dakota/releases/download/v{{ version }}/dakota-{{ version }}-public-src-cli.tar.gz
-  sha256: 51c4aaa5ab453c48b6ffae0af1b21f2efa1a719a30eaf3e3712b2693c7e9a420
+  sha256: 44432d30a8df226cbe9c9d2507a2634b543559a195d0b3b63e9d7f6179098d4a
   patches:
-    # - patches/surfpack_py_bindings.patch
     - patches/python.patch
     - patches/tests.patch
-    - patches/link_librt.patch
-    - patches/boost_dll_import_symbol.patch
-    # - patches/use_external_pybind11.patch
+    # - patches/link_librt.patch
+    # # - patches/surfpack_py_bindings.patch
+    # # - patches/use_external_pybind11.patch
 
 build:
-  number: 3
+  number: 0
   skip: true  # [win or osx]
-  # not yet compatible/supported
-  skip: true  # [py==311]
 
 requirements:
   build:
