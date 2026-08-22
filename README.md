@@ -3,7 +3,7 @@ About dakota-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/dakota-feedstock/blob/main/LICENSE.txt)
 
-Home: https://dakota.sandia.gov
+Home: https://dakota.sandia.gov/
 
 Package license: LGPL-2.1-or-later
 
@@ -11,100 +11,29 @@ Summary: The Dakota project delivers software for optimization and uncertainty q
 
 Development: https://github.com/snl-dakota/dakota
 
-Documentation: https://dakota.sandia.gov/content/610-reference-manual
+Documentation: https://snl-dakota.github.io/docs/latest_release/users/
 
 The Dakota project delivers both state-of-the-art research and robust,
 usable software for optimization and UQ. Broadly, the Dakota software's
 advanced parametric analyses enable design exploration, model calibration,
-risk analysis, and quantification of margins and uncertainty with computational
-models. The Dakota toolkit provides a flexible, extensible interface
-between such simulation codes and its iterative systems analysis methods.
+risk analysis, and quantification of margins and uncertainty with
+computational models. The Dakota toolkit provides a flexible, extensible
+interface between such simulation codes and its iterative systems analysis
+methods.
 
+This build enables MPI, HDF5, Python (direct interface, surrogates, and
+dakota.environment wrapper), and QUESO/GSL Bayesian calibration.
 
 Current build status
 ====================
 
 
-<table>
-    
-  <tr>
-    <td>Azure</td>
+<table><tr>
+    <td>GitHub Actions</td>
     <td>
-      <details>
-        <summary>
-          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main">
-          </a>
-        </summary>
-        <table>
-          <thead><tr><th>Variant</th><th>Status</th></tr></thead>
-          <tbody><tr>
-              <td>linux_64_blas_implblisnumpy1.22python3.10.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.10.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implblisnumpy1.22python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implblisnumpy1.22python3.9.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implblisnumpy1.22python3.9.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.22python3.10.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.10.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.22python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implmklnumpy1.22python3.9.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implmklnumpy1.22python3.9.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.22python3.10.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.10.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.22python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_64_blas_implopenblasnumpy1.22python3.9.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=7379&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/dakota-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_blas_implopenblasnumpy1.22python3.9.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </details>
+      <a href="https://github.com/conda-forge/dakota-feedstock/actions/workflows/conda-build.yml">
+        <img src="https://github.com/conda-forge/dakota-feedstock/actions/workflows/conda-build.yml/badge.svg?event=push&branch=main">
+      </a>
     </td>
   </tr>
 </table>
@@ -126,31 +55,73 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `dakota` can be installed with `conda`:
+How to use
+----------
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda install dakota
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba install dakota
 ```
 
-It is possible to list all of the versions of `dakota` available on your platform with `conda`:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+# for adding to your local project
+pixi add dakota
+# for installing globally
+pixi global install dakota
+```
+
+</details>
+
+Search package versions
+-----------------------
+
+It is possible to list all of the versions of `dakota` available on your platform:
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda search dakota --channel conda-forge
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba search dakota --channel conda-forge
 ```
 
-Alternatively, `mamba repoquery` may provide more information:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+pixi search dakota --channel conda-forge
+```
+
+</details>
+
+<details>
+<summary>With mamba repoquery, which may provide more information</summary>
 
 ```
 # Search all versions available on your platform:
@@ -162,6 +133,8 @@ mamba repoquery whoneeds dakota --channel conda-forge
 # List dependencies of `dakota`:
 mamba repoquery depends dakota --channel conda-forge
 ```
+
+</details>
 
 
 About conda-forge
@@ -185,12 +158,12 @@ it is possible to build and upload installable packages to the
 [conda-forge](https://anaconda.org/conda-forge) [anaconda.org](https://anaconda.org/)
 channel for Linux, Windows and OSX respectively.
 
-To manage the continuous integration and simplify feedstock maintenance
+To manage the continuous integration and simplify feedstock maintenance,
 [conda-smithy](https://github.com/conda-forge/conda-smithy) has been developed.
 Using the ``conda-forge.yml`` within this repository, it is possible to re-render all of
 this feedstock's supporting files (e.g. the CI configuration files) with ``conda smithy rerender``.
 
-For more information please check the [conda-forge documentation](https://conda-forge.org/docs/).
+For more information, please check the [conda-forge documentation](https://conda-forge.org/docs/).
 
 Terminology
 ===========
@@ -217,7 +190,7 @@ merged, the recipe will be re-built and uploaded automatically to the
 everybody to install and use from the `conda-forge` channel.
 Note that all branches in the conda-forge/dakota-feedstock are
 immediately built and any created packages are uploaded, so PRs should be based
-on branches in forks and branches in the main repository should only be used to
+on branches in forks, and branches in the main repository should only be used to
 build distinct package versions.
 
 In order to produce a uniquely identifiable distribution:
