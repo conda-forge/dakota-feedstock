@@ -1,0 +1,104 @@
+schema_version: 1
+
+context:
+  version: "6.24.0"
+  name: dakota
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/snl-dakota/dakota/releases/download/v${{ version }}/dakota-${{ version }}-public-src-cli.tar.gz
+  sha256: da461ffe9df2c56c0b0125503f3b69753c30fa44ac9fabb46a43b44fa68a15fa
+  patches:
+    - patches/boost_system_header_only.patch
+    - patches/ddace_c23_prototypes.patch
+
+build:
+  number: 0
+  # Windows and macOS are not packaged yet (historical feedstock scope).
+  skip:
+    - win
+    - osx
+    - not match(python, "3.14")
+
+requirements:
+  build:
+    - ${{ compiler("c") }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler("cxx") }}
+    - ${{ compiler("fortran") }}
+    - cmake >=3.23
+    - ninja
+    - pkg-config
+  host:
+    - ${{ mpi }}
+    - python
+    - numpy
+    - scipy
+    - h5py
+    - libboost-devel
+    - eigen
+    - libblas
+    - libcblas
+    - liblapack
+    - hdf5
+    - gsl
+    - nlohmann_json
+    - perl
+    - perl-data-dumper
+  run:
+    - ${{ mpi }}
+    - python
+    - numpy
+    - pydantic >=2.12
+  ignore_run_exports:
+    by_name:
+      - perl
+
+tests:
+  - python:
+      imports:
+        - dakota
+        - dakota.interfacing
+        - dakota.interfacing.dprepro
+      pip_check: false
+  - script:
+      - dakota -v
+      - dakota -i UQ.in
+    files:
+      recipe:
+        - UQ.in
+        - rosenbrock.py
+  - script:
+      - $PREFIX/share/dakota/test/dakota_test.perl --label-regex=AcceptanceTest
+    requirements:
+      run:
+        - perl
+
+about:
+  homepage: https://dakota.sandia.gov
+  license: LGPL-2.1-or-later
+  license_file:
+    - LICENSE
+    - COPYRIGHT
+  summary: The Dakota project delivers software for optimization and uncertainty quantification.
+  description: |
+    The Dakota project delivers both state-of-the-art research and robust,
+    usable software for optimization and UQ. Broadly, the Dakota software's
+    advanced parametric analyses enable design exploration, model calibration,
+    risk analysis, and quantification of margins and uncertainty with
+    computational models. The Dakota toolkit provides a flexible, extensible
+    interface between such simulation codes and its iterative systems analysis
+    methods.
+
+    This build enables MPI, HDF5, Python (direct interface, surrogates, and
+    dakota.environment wrapper), and QUESO/GSL Bayesian calibration.
+  documentation: https://snl-dakota.github.io/docs/latest_release/users/
+  repository: https://github.com/snl-dakota/dakota
+
+extra:
+  recipe-maintainers:
+    - timsnyder
+    - looooo
