@@ -13,6 +13,7 @@ source:
   sha256: da461ffe9df2c56c0b0125503f3b69753c30fa44ac9fabb46a43b44fa68a15fa
   patches:
     - patches/boost_system_header_only.patch
+    - patches/ddace_c23_prototypes.patch
 
 build:
   number: 0
